@@ -9,7 +9,7 @@ const TopBar = () => {
   const location = useLocation()
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#333' }}>
+    <AppBar position="static" sx={{ backgroundColor: '#333', borderRadius: 1}}>
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: '#fff' }}>
           Pokédex
