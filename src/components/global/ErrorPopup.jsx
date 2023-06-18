@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import Snackbar from '@mui/material/Snackbar'
 import Alert from '@mui/material/Alert'
-import { ErrorContext } from '../../context/ErrorContext'
+import { ErrorContext } from '../../contexts/ErrorContext'
 
 const ErrorPopup = () => {
   const { error, hideError } = useContext(ErrorContext)

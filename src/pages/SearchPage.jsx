@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Box, CircularProgress} from '@mui/material'
 import SearchBar from '../components/SearchBar'
-import { DataContext } from '../context/DataContext'
+import { DataContext } from '../contexts/DataContext'
 import pokemonShuffler from '../utils/pokemonShuffler'
-import { ErrorContext } from '../context/ErrorContext'
+import { ErrorContext } from '../contexts/ErrorContext'
+import PokemonCard from '../components/PokemonCard'
 
 // todo
 // make component for searched pokemon
@@ -28,7 +29,7 @@ const SearchPage = () => {
   }
 
   const getPokemons = async () => {
-    if(!pokemonList){
+    if(pokemonList.length < 1){
       let response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1010')
       let data = await response.json()
       if (response.status === 200){
@@ -44,7 +45,7 @@ const SearchPage = () => {
     // console.log('waited 5s')
     setLoading(false)
   }
-
+  
   useEffect(() => {
     getPokemons()
   }, [])
@@ -66,14 +67,19 @@ const SearchPage = () => {
   }
 
   return (
-    <Box sx={{ mt: '10px' }}>
-      <SearchBar 
-        query={searchTerm}
-        suggestionsArray={pokemonList.map(item => item.name)}
-        handleSearch={handleSearch}
-        setQuery={updateSearchTerm}
-      />
-    </Box>
+    <>
+      <Box sx={{ mt: '10px' }}>
+        <SearchBar 
+          query={searchTerm}
+          suggestionsArray={pokemonList.map(item => item.name)}
+          handleSearch={handleSearch}
+          setQuery={updateSearchTerm}
+        />
+      </Box>
+      <Box>
+        <PokemonCard name_id="bulbasaur"/>
+      </Box>
+    </>
   )
 }
 

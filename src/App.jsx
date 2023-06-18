@@ -4,8 +4,8 @@ import './App.css'
 import TopBar from './components/global/TopBar'
 import SearchPage from './pages/SearchPage'
 import SearchComponent from './components/SearchBar'
-import { DataProvider } from './context/DataContext'
-import { ErrorProvider } from './context/ErrorContext'
+import { DataProvider } from './contexts/DataContext'
+import { ErrorProvider } from './contexts/ErrorContext'
 import ErrorPopup from './components/global/ErrorPopup'
 
 function App() {

@@ -7,9 +7,6 @@ import SearchIcon from '@mui/icons-material/Search'
 import IconButton from '@mui/material/IconButton'
 import Fade from '@mui/material/Fade'
 
-// requires array to offer suggestions
-// needs set query function
-// needs function to handle search
 
 const SearchBar = ({ query, suggestionsArray, setQuery, handleSearch }) => {
   const [suggestions, setSuggestions] = useState([])
