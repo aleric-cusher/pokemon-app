@@ -8,6 +8,7 @@ import { BookmarkProvider } from './contexts/BookmarkContext'
 import ErrorPopup from './components/global/ErrorPopup'
 import DetailsPage from './pages/DetailsPage'
 import BookmarksPage from './pages/BookmarksPage'
+import HomePage from './pages/HomePage'
 
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
             <Router>
               <TopBar />
               <Routes>
-                {/* <Route exact path="/" element={<HomePage/>} /> */}
+                <Route exact path="/" element={<HomePage />} />
                 <Route path="/search" element={ <SearchPage /> } />
                 <Route path="/details/:identifier" element={<DetailsPage />} />
                 <Route path="/bookmarks" element={<BookmarksPage />} />
