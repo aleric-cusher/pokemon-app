@@ -128,13 +128,8 @@ The Pokédex Web App is built using the following technologies:
 ![Alt text](<extra/Screenshot 2023-06-19 211603.png>)
 
 ### DetailsPage
-<<<<<<< HEAD
 ![Alt text](<extra/Screenshot 2023-06-19 212911.png>)
 ![Alt text](<extra/Screenshot 2023-06-19 at 21-29-24 Pokédex.png>)
-=======
-![Alt text](<extra/extra 2023-06-19 212911.png>)
-![Alt text](<extra/Screenshot 2023-06-19 at 21-29-24 Pokédex-1.png>)
->>>>>>> a82e3346f75a8d8fdf81c73a3839351eada33b1b
 
 ### Video
 <video src="extra/website_video.mp4" controls title="Pokedex"></video>
