@@ -4,28 +4,32 @@ import TopBar from './components/global/TopBar'
 import SearchPage from './pages/SearchPage'
 import { DataProvider } from './contexts/DataContext'
 import { ErrorProvider } from './contexts/ErrorContext'
+import { BookmarkProvider } from './contexts/BookmarkContext'
 import ErrorPopup from './components/global/ErrorPopup'
 import DetailsPage from './pages/DetailsPage'
+import BookmarksPage from './pages/BookmarksPage'
+
 
 function App() {
 
   return (
     <ErrorProvider>
-      <DataProvider>
-        <div className='app'>
-          <ErrorPopup />
-          <Router>
-            <TopBar />
-            <Routes>
-              {/* <Route exact path="/" element={<HomePage/>} /> */}
-              <Route path="/search" element={ <SearchPage /> } />
-              {/* <Route path="/listing" element={<ListingPage/>} /> */}
-              <Route path="/detail/:identifier" element={<DetailsPage />} />
-              {/* <Route path="/bookmarks" element={<BookmarksPage/>} /> */}
-            </Routes>
-          </Router>
-        </div>
-      </DataProvider>
+      <BookmarkProvider>
+        <DataProvider>
+          <div className='app'>
+            <ErrorPopup />
+            <Router>
+              <TopBar />
+              <Routes>
+                {/* <Route exact path="/" element={<HomePage/>} /> */}
+                <Route path="/search" element={ <SearchPage /> } />
+                <Route path="/details/:identifier" element={<DetailsPage />} />
+                <Route path="/bookmarks" element={<BookmarksPage />} />
+              </Routes>
+            </Router>
+          </div>
+        </DataProvider>
+      </BookmarkProvider>
     </ErrorProvider>
   )
 }

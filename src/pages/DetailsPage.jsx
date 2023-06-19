@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 import pokemonColors from '../utils/pokemonColors'
 import { Box, Typography, Chip, Card, CardContent, Pagination, Grid, CircularProgress } from '@mui/material'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
@@ -11,6 +11,7 @@ import { DataContext } from '../contexts/DataContext'
 import PaginationComponent from '../components/PaginationComponent'
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder'
 import BookmarkIcon from '@mui/icons-material/Bookmark'
+import { BookmarkContext } from '../contexts/BookmarkContext'
 
 const theme = createTheme({
   typography: {
@@ -19,79 +20,17 @@ const theme = createTheme({
   },
 })
 
-const DetailsPage = () => {
+const DetailsPage = (  ) => {
   const { identifier } = useParams()
-
-  const [pokemon, setPokemon] = useState(null)
+  const location = useLocation()
+  const [pokemon, setPokemon] = useState(location.state)
+  const [isBookmark, setIsBookmark] = useState(false)
 
   const { showError } = useContext(ErrorContext)
   const { pokemonList, updatePokemonList } = useContext(DataContext)
-  
-  const updateSpecies = async () => {
-    console.log('calling hadle updateSpecies', parseInt(identifier, 10))
-    let obj = pokemonList.find(item => (item.id === parseInt(identifier, 10)))
-    console.log('pokemon in species', obj)
-    const url = obj.species.url
-    if(url){
-      let newObj = JSON.parse(JSON.stringify(obj))
-      let response = await fetch(url)
-      let species = await response.json()
-      if (response.status !== 200){
-        showError('Something went wrong fetching the species')
-        console.log('Error: ', response.statusText)
-      } else {
-        newObj.species = species
-        setPokemon(newObj)
-        let temp = pokemonList
-        let ind = temp.indexOf(obj)
-        temp.splice(ind, 1, newObj)
-        updatePokemonList(temp)
-      }
-    } else {
-      setPokemon(obj)
-    }
-  }
-  
-  const updatePoke = async () => {
-    let obj = pokemonList.find(item => item.id === parseInt(identifier, 10))
-    console.log('object', obj)
-    if(obj){
-      if(obj.url){
-        let response = await fetch(obj.url)
-        let data = await response.json()
-        if (response.status !== 200){
-          showError('Something went wrong')
-          console.log('Error: ', response.statusText)
-        } else {
-          let temp = pokemonList
-          let ind = temp.indexOf(obj)
-          temp.splice(ind, 1, data)
-          updatePokemonList(temp)
-          // setPokemon(data)
-        }
-      }
-    } else {
-      let response = await fetch('https://pokeapi.co/api/v2/pokemon/' + identifier + '/')
-      let data = await response.json()
-      if (response.status !== 200){
-        showError('Pokemon Not Found')
-        console.log('Error: ', response.statusText)
-      } else {
-        let temp = pokemonList
-        temp.push(data)
-        updatePokemonList(temp)
-        // setPokemon(data)
-        console.log('pokemonlist', pokemonList)
-      }
-    }
-    updateSpecies()
-  }
+  const { bookmarked, updateBookmarked } = useContext(BookmarkContext)
 
-  useEffect(() => {
-    updatePoke()
-    console.log('in useEffect')
-  }, [identifier])  
-  
+
   const getStatColor = (value) => {
     if (value < 60) {
       return 'red'
@@ -102,14 +41,113 @@ const DetailsPage = () => {
     }
   }
   
-  if(!pokemon){
+  const toggleBookmark = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsBookmark((prevState) => !prevState)
+  
+    let arr = bookmarked.includes(pokemon.id)
+      ? bookmarked.filter((id) => id !== pokemon.id)
+      : [...bookmarked, pokemon.id]
+  
+    updateBookmarked(arr)
+  }
+  
+  const updateSpecies = async () => {
+    let obj = pokemon
+    const url = obj.species.url
+    if(url){
+      try{
+        let newObj = JSON.parse(JSON.stringify(obj))
+        let response = await fetch(url)
+        if (response.status !== 200){
+          showError('Something went wrong fetching the species')
+          console.log('Error: ', response.statusText)
+        } else {
+          let species = await response.json()
+          newObj.species = species
+          setPokemon(newObj)
+          let temp = pokemonList
+          let ind = temp.indexOf(obj)
+          temp.splice(ind, 1, newObj)
+          updatePokemonList(temp)
+        }
+      } catch (error) {
+        showError('Error fetching the species')
+        console.log('Error:', error)
+      }
+    } else {
+      setPokemon(obj)
+    }
+  }
+  
+  const updatePoke = async () => {
+    // console.log('updating poke', pokemon)
+    let obj = pokemonList.find(item => (item.name === identifier || item.id === identifier))
+    if(obj){
+      if(obj.url){
+        try {
+          let response = await fetch(obj.url)
+          if (response.status !== 200){
+            showError('Something went wrong')
+            console.log('Error: ', response.statusText)
+          } else {
+            let data = await response.json()
+            let temp = pokemonList
+            setPokemon(data)
+            let ind = temp.indexOf(obj)
+            temp.splice(ind, 1, data)
+            updatePokemonList(temp)
+            updateSpecies()
+          }
+        } catch (error) {
+          showError('Error fetching the Pokemon')
+          console.log('Error:', error)
+        }
+      } else {
+        setPokemon(obj)
+      }
+    } else {
+      try{
+        let response = await fetch('https://pokeapi.co/api/v2/pokemon/' + identifier.toString() + '/')
+        if (response.status !== 200){
+          showError('Pokemon Not Found')
+          console.log('Error: ', response.statusText)
+        } else {
+          let data = await response.json()
+          setPokemon(data)
+          let temp = pokemonList
+          temp.push(data)
+          updatePokemonList(temp)
+          updateSpecies()
+        }
+      } catch (error) {
+        showError('Error fetching the Pokemon')
+        console.log('Error:', error)
+      }
+    }
+  }
+
+  const updateBookmark = () => {
+    setIsBookmark(bookmarked.includes(pokemon.id) ? true : false)
+  }
+
+  useEffect(() => {
+    updateBookmark()
+  }, [pokemon])
+
+  useEffect(() => {
+    updatePoke()
+  }, [identifier])  
+  
+  if(pokemon.species.url){
     return (
       <Box
         sx={{
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          height: '80vh', // Adjust the height as needed
+          height: '80vh',
         }}
       >
         <CircularProgress />
@@ -128,11 +166,19 @@ const DetailsPage = () => {
                   <Grid item xs={12} md={6}>
                     <Card sx={{ bgcolor: pokemonColors(pokemon.species.color.name), position: 'relative' }}>
                       <CardContent>
-                        <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', color: "#fff" }}>
-                          {pokemon.isBookmarked ? (
-                            <BookmarkIcon onClick={toggleBookmark} />
+                        <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', color: "#fff", verticalAlign: 'center' }}>
+                          {isBookmark ? (
+                            <BookmarkIcon
+                              id="bookmark-icon"
+                              style={{ color: '#fff', fontWeight: 'bold', cursor: 'pointer', height: "40px", width: "40px" }}
+                              onClick={toggleBookmark}
+                            />
                           ) : (
-                            <BookmarkBorderIcon onClick={toggleBookmark} />
+                            <BookmarkBorderIcon
+                              id="bookmark-icon"
+                              style={{ color: '#fff', fontWeight: 'bold', cursor: 'pointer', height: "40px", width: "40px" }}
+                              onClick={toggleBookmark}
+                            />
                           )}
                           {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
                         </Typography>
@@ -144,9 +190,11 @@ const DetailsPage = () => {
                           alt={pokemon.name}
                           style={{ width: '100%', height: 'auto' }}
                         />
-                        <Typography variant="subtitle1" gutterBottom sx={{ color: '#fff' }}>
-                          Base Experience: {pokemon.base_experience}
-                        </Typography>
+                        {pokemon.base_experience && (
+                          <Typography variant="subtitle1" gutterBottom sx={{ color: '#fff' }}>
+                            Base Experience: {pokemon.base_experience}
+                          </Typography>
+                        )}
                         <Typography variant="subtitle1" gutterBottom sx={{ color: '#fff' }}>
                           Height: {pokemon.height} decimeters
                         </Typography>
@@ -176,8 +224,8 @@ const DetailsPage = () => {
                             key={item.stat.name}
                             label={item.stat.name}
                             value={item.base_stat}
-                            maxValue={100} // Set the maximum value for the health bar
-                            color={getStatColor(item.base_stat)} // Custom function to determine the color based on the stat value
+                            maxValue={100} // upper limit of health
+                            color={getStatColor(item.base_stat)}
                           />
                         ))}
                         <Typography variant="subtitle1" gutterBottom sx={{ color: '#fff', mt: "8px" }}>
@@ -196,16 +244,18 @@ const DetailsPage = () => {
                           Egg Groups: {pokemon.species.egg_groups.map((item) => item.name).join(", ")}
                         </Typography>
                         <Typography variant="subtitle1" gutterBottom sx={{ color: '#fff' }}>
-                          Growth Rate: {pokemon.species.growth_rate.name}
+                          Growth Rate: {pokemon.species.growth_rate.name ? pokemon.species.growth_rate.name : ''}
+                        </Typography>
+                        {pokemon.species.habitat && (
+                          <Typography variant="subtitle1" gutterBottom sx={{ color: '#fff' }}>
+                            Habitat: {pokemon.species.habitat.name}
+                          </Typography>
+                        )}
+                        <Typography variant="subtitle1" gutterBottom sx={{ color: '#fff' }}>
+                          Base Happiness: {pokemon.species.base_happiness ? pokemon.species.base_happiness : ''}
                         </Typography>
                         <Typography variant="subtitle1" gutterBottom sx={{ color: '#fff' }}>
-                          Habitat: {pokemon.species.habitat.name}
-                        </Typography>
-                        <Typography variant="subtitle1" gutterBottom sx={{ color: '#fff' }}>
-                          Base Happiness: {pokemon.species.base_happiness}
-                        </Typography>
-                        <Typography variant="subtitle1" gutterBottom sx={{ color: '#fff' }}>
-                          Capture Rate: {pokemon.species.capture_rate}
+                          Capture Rate: {pokemon.species.capture_rate ? pokemon.species.capture_rate : ''}
                         </Typography>
                       </CardContent>
                     </Card>

@@ -74,8 +74,8 @@ const SearchBar = ({ query, suggestionsArray, setQuery, handleSearch }) => {
               zIndex: 5,
               left: 0,
               right: 0,
-              maxHeight: '200px', // Set the desired height for the scrollable list
-              overflowY: 'auto', // Enable vertical scrolling
+              maxHeight: '200px', // height of suggestion box
+              overflowY: 'auto',
               backgroundColor: '#fff',
               border: '1px solid rgba(0, 0, 0, 0.23)',
               borderRadius: 4,

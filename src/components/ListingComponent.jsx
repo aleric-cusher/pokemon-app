@@ -1,29 +1,58 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PokemonCard from './PokemonCard'
 import { Grid, Button, CircularProgress } from '@mui/material'
 
-const ListingComponent = ({ identifiers }) => {
+const ListingComponent = ({ identifiers, loadMore=false, initialLoad=10, updateInitialLoad=null }) => {
   const [visibleIdentifiers, setVisibleIdentifiers] = useState([])
+  const [allIdentifiers, setAllIdentifiers] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [isAllLoaded, setIsAllLoaded] = useState(false)
 
   const handleLoadMore = () => {
     setIsLoading(true)
-    // Simulating an asynchronous data fetching operation
     setTimeout(() => {
       const totalLoaded = visibleIdentifiers.length + 10
-      if (totalLoaded >= identifiers.length) {
+      if (totalLoaded >= allIdentifiers.length) {
         setIsAllLoaded(true)
       }
-      setVisibleIdentifiers(identifiers.slice(0, totalLoaded))
+      setVisibleIdentifiers(allIdentifiers.slice(0, totalLoaded))
       setIsLoading(false)
-    }, 1000)
+      if(typeof updateInitialLoad === "function"){
+        updateInitialLoad(totalLoaded)
+      }
+    }, 500)
   }
 
-  // Load initial set of identifiers
-  useState(() => {
-    setVisibleIdentifiers(identifiers.slice(0, 10))
-  }, [])
+  useEffect(() => {
+    setAllIdentifiers([...new Set(identifiers)])
+  }, [identifiers])
+
+  useEffect(() => {
+    setVisibleIdentifiers(allIdentifiers.slice(0, initialLoad))
+  }, [allIdentifiers])
+
+  useEffect(() => {
+    setVisibleIdentifiers((prevVisibleIdentifiers) => {
+      const updatedVisibleIdentifiers = prevVisibleIdentifiers.filter((item) =>
+      allIdentifiers.includes(item)
+      )
+      return updatedVisibleIdentifiers
+    })
+  }, [allIdentifiers])
+
+  if(!loadMore){
+    return(
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Grid container justifyContent="left" spacing={2}>
+            {allIdentifiers.map((item) => (
+              <PokemonCard key={item} pokemonIdentifier={item} />
+            ))}
+          </Grid>
+        </Grid>
+      </Grid>
+    )
+  }
 
   return (
     <Grid container spacing={2}>
@@ -36,19 +65,20 @@ const ListingComponent = ({ identifiers }) => {
       </Grid>
       <Grid item xs={12}>
         <Grid container justifyContent="center">
-          <Button
-            variant="contained"
-            color="primary"
-            disabled={isLoading || isAllLoaded}
-            onClick={handleLoadMore}
-            fullWidth
-          >
-            {isLoading ? (
-              <CircularProgress color="inherit" size={24} />
-            ) : (
-              'Load More'
-            )}
-          </Button>
+          {!isAllLoaded && visibleIdentifiers.length > 0 && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleLoadMore}
+              fullWidth
+            >
+              {isLoading ? (
+                <CircularProgress color="inherit" size={24} />
+              ) : (
+                'Load More'
+              )}
+            </Button>
+          )}
         </Grid>
       </Grid>
     </Grid>
@@ -56,26 +86,3 @@ const ListingComponent = ({ identifiers }) => {
 }
 
 export default ListingComponent
-
-
-
-
-// import React from 'react'
-// import PokemonCard from './PokemonCard'
-// import { Grid } from '@mui/material'
-
-// const ListingComponent = ({ identifiers }) => {
-//   return (
-//     <Grid container spacing={2}>
-//       <Grid item xs={12}>
-//         <Grid container justifyContent="left" spacing={2}>
-//           {identifiers.map((item) => {
-//             return <PokemonCard key={item} pokemonIdentifier={item} />
-//           })}
-//         </Grid>
-//       </Grid>
-//     </Grid>
-//   )
-// }
-
-// export default ListingComponent

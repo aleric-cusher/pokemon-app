@@ -4,22 +4,14 @@ import SearchBar from '../components/SearchBar'
 import { DataContext } from '../contexts/DataContext'
 import pokemonShuffler from '../utils/pokemonShuffler'
 import { ErrorContext } from '../contexts/ErrorContext'
-import PokemonCard from '../components/PokemonCard'
 import ListingComponent from '../components/ListingComponent'
-
-// todo
-// make component for searched pokemon
-// handle error popup for api request
-// make listings component
-// figure out pagination
-// figure out loading thing on search
 
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [loading, setLoading] = useState(true)
   const [showSearch, setShowSearch] = useState(null)
 
-  const { pokemonList, updatePokemonList} = useContext(DataContext)
+  const { pokemonList, updatePokemonList, searchLoad, updateSearchLoad} = useContext(DataContext)
   const { showError } = useContext(ErrorContext)
 
   const handleSearch = (value=null) => {
@@ -50,7 +42,7 @@ const SearchPage = () => {
           item.id = parseInt(item.url.split('/')[6], 10)
           // console.log(item.url.split('/')[6]) 
         })
-        pokemons = pokemonShuffler(pokemons)
+        // pokemons = pokemonShuffler(pokemons)
         updatePokemonList(pokemons)
       }
     }
@@ -69,7 +61,7 @@ const SearchPage = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          height: '80vh', // Adjust the height as needed
+          height: '80vh',
         }}
       >
         <CircularProgress />
@@ -77,7 +69,6 @@ const SearchPage = () => {
     )
   }
 
-  const list = [25, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 30, 31, 32]
   return (
     <>
       <Box sx={{ mt: '15px', mb: '15px' }}>
@@ -103,13 +94,18 @@ const SearchPage = () => {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              height: '80vh', // Adjust the height as needed
+              height: '80vh',
             }}
           >
             <CircularProgress />
           </Box>
         ) : (
-          <ListingComponent identifiers={list} />
+          <ListingComponent
+            identifiers={pokemonList.map(item => item.id)}
+            loadMore={true}
+            initialLoad={searchLoad}
+            updateInitialLoad={updateSearchLoad}
+          />
         )}
       </Box>
     </>

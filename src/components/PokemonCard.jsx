@@ -4,16 +4,20 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid'
-import { CircularProgress } from '@mui/material'
+import BookmarkIcon from '@mui/icons-material/Bookmark'
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder'
 import { ErrorContext } from '../contexts/ErrorContext'
 import { DataContext } from '../contexts/DataContext'
 import pokemonColors from '../utils/pokemonColors'
+import { BookmarkContext } from '../contexts/BookmarkContext'
 
 const PokemonCard = ({ pokemonIdentifier }) => {
-  const [pokemon, setPokemon] = useState(null)
-
+  const { bookmarked, updateBookmarked } = useContext(BookmarkContext)
   const { showError } = useContext(ErrorContext)
   const { pokemonList, updatePokemonList } = useContext(DataContext)
+
+  const [pokemon, setPokemon] = useState([])
+  const [isBookmark, setIsBookmark] = useState(false)
 
   const navigate = useNavigate()
 
@@ -38,11 +42,10 @@ const PokemonCard = ({ pokemonIdentifier }) => {
     } else {
       setPokemon(obj)
     }
-    
   }
   
   const updatePoke = async () => {
-    // console.log(pokemon)
+    // console.log('updating poke', pokemon)
     let obj = pokemonList.find(item => (item.name === pokemonIdentifier || item.id === pokemonIdentifier))
     if(obj){
       if(obj.url){
@@ -53,10 +56,14 @@ const PokemonCard = ({ pokemonIdentifier }) => {
         } else {
           let data = await response.json()
           let temp = pokemonList
+          setPokemon(data)
           let ind = temp.indexOf(obj)
           temp.splice(ind, 1, data)
           updatePokemonList(temp)
+          updateSpecies()
         }
+      } else {
+        setPokemon(obj)
       }
     } else {
       let response = await fetch('https://pokeapi.co/api/v2/pokemon/' + pokemonIdentifier.toString() + '/')
@@ -65,23 +72,50 @@ const PokemonCard = ({ pokemonIdentifier }) => {
         console.log('Error: ', response.statusText)
       } else {
         let data = await response.json()
+        setPokemon(data)
         let temp = pokemonList
         temp.push(data)
         updatePokemonList(temp)
+        updateSpecies()
       }
     }
-    updateSpecies()
+  }
+
+  const updateBookmark = () => {
+    setIsBookmark(bookmarked.includes(pokemon.id) ? true : false)
   }
 
   useEffect(() => {
+    // console.log('ineffect')
     updatePoke()
   }, [pokemonIdentifier])
+
+  useEffect(() => {
+    updateBookmark()
+  }, [pokemon])
   
-  const handleClick = () => {
-    navigate(`/details/${pokemonIdentifier}`)
+  const handleClick = (e) => {
+    e.preventDefault()
+    if (e.target === document.getElementById('bookmark-icon')) {
+      toggleBookmark(e)
+    } else {
+      navigate(`/details/${pokemonIdentifier}`, { state: pokemon })
+    }
   }
 
-  if(!pokemon){
+  const toggleBookmark = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsBookmark((prevState) => !prevState)
+  
+    let arr = bookmarked.includes(pokemon.id)
+      ? bookmarked.filter((id) => id !== pokemon.id)
+      : [...bookmarked, pokemon.id]
+  
+    updateBookmarked(arr)
+  }
+
+  if(!pokemon.species){
     return null
   }
 
@@ -90,10 +124,10 @@ const PokemonCard = ({ pokemonIdentifier }) => {
   
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
-      <Card onClick={handleClick} style={{ overflow: 'hidden', borderRadius: '12px' }}>
+      <Card onClick={handleClick} style={{ overflow: 'hidden', borderRadius: '12px', cursor: 'pointer' }}>
         <div
           style={{
-            backgroundColor: pokemonColors(pokemon.species.color.name),
+            backgroundColor: pokemonColors((pokemon.species.color ? pokemon.species.color.name : null)),
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -108,6 +142,19 @@ const PokemonCard = ({ pokemonIdentifier }) => {
           <Typography variant="body2" color="#fff" style={{ position: 'absolute', top: '10px', right: '10px', fontWeight: 'bold' }}>
             #{id.toString().padStart(4, '0')}
           </Typography>
+          {isBookmark ? (
+            <BookmarkIcon
+              id="bookmark-icon"
+              style={{ position: 'absolute', bottom: '10px', right: '10px', color: '#fff', cursor: 'pointer' }}
+              onClick={toggleBookmark}
+            />
+          ) : (
+            <BookmarkBorderIcon
+              id="bookmark-icon"
+              style={{ position: 'absolute', bottom: '10px', right: '10px', color: '#fff', cursor: 'pointer' }}
+              onClick={toggleBookmark}
+            />
+          )}
         </div>
         <CardContent>
           <Typography variant="h5" component="div" style={{ textTransform: 'capitalize', fontWeight: 'bold' }}>
