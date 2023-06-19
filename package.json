@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 5173",
     "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
@@ -16,7 +16,6 @@
     "@mui/material": "^5.13.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-pro-sidebar": "^1.1.0-alpha.1",
     "react-router-dom": "6.12"
   },
   "devDependencies": {

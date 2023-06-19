@@ -9,8 +9,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
 
 const TopBar = () => {
-  const location = useLocation();
-  const highlight = '#'
+  const location = useLocation()
 
   return (
     <AppBar position="static" sx={{ backgroundColor: '#81b29a', borderRadius: 1 }}>
