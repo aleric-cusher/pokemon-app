@@ -1,47 +1,60 @@
-import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import AppBar from '@mui/material/AppBar'
-import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import HomeIcon from '@mui/icons-material/Home';
+import SearchIcon from '@mui/icons-material/Search';
+import BookmarksIcon from '@mui/icons-material/Bookmarks';
 
 const TopBar = () => {
-  const location = useLocation()
+  const location = useLocation();
+  const highlight = '#'
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#333', borderRadius: 1}}>
+    <AppBar position="static" sx={{ backgroundColor: '#81b29a', borderRadius: 1 }}>
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: '#fff' }}>
           Pokédex
         </Typography>
         <nav>
-          <Button
+          <IconButton
             component={Link}
             to="/"
-            color={location.pathname === '/' ? 'secondary' : 'inherit'}
+            color={location.pathname === '/' ? '#ffb4a2' : 'inherit'}
             sx={{ marginRight: '1rem' }}
           >
-            Home
-          </Button>
-          <Button
+            <HomeIcon />
+            <Typography variant="subtitle1" component="span" sx={{ marginLeft: '0.5rem' }}>
+              Home
+            </Typography>
+          </IconButton>
+          <IconButton
             component={Link}
             to="/search"
-            color={location.pathname === '/search' ? 'secondary' : 'inherit'}
+            color={location.pathname === '/search' ? '#ffb4a2' : 'inherit'}
             sx={{ marginRight: '1rem' }}
           >
-            Search
-          </Button>
-          <Button
+            <SearchIcon />
+            <Typography variant="subtitle1" component="span" sx={{ marginLeft: '0.5rem' }}>
+              Search
+            </Typography>
+          </IconButton>
+          <IconButton
             component={Link}
             to="/bookmarks"
-            color={location.pathname === '/bookmarks' ? 'secondary' : 'inherit'}
+            color={location.pathname === '/bookmarks' ? '#ffb4a2' : 'inherit'}
           >
-            Bookmarks
-          </Button>
+            <BookmarksIcon />
+            <Typography variant="subtitle1" component="span" sx={{ marginLeft: '0.5rem' }}>
+              Bookmarks
+            </Typography>
+          </IconButton>
         </nav>
       </Toolbar>
     </AppBar>
-  )
-}
+  );
+};
 
-export default TopBar
+export default TopBar;
