@@ -38,6 +38,7 @@ const SearchBar = ({ query, suggestionsArray, setQuery, handleSearch }) => {
   const handleSuggestionClick = (suggestion) => {
     setQuery(suggestion)
     setSuggestions([])
+    handleSearch(suggestion)
   }
 
   return (

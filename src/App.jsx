@@ -1,12 +1,11 @@
-import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
 import TopBar from './components/global/TopBar'
 import SearchPage from './pages/SearchPage'
-import SearchComponent from './components/SearchBar'
 import { DataProvider } from './contexts/DataContext'
 import { ErrorProvider } from './contexts/ErrorContext'
 import ErrorPopup from './components/global/ErrorPopup'
+import DetailsPage from './pages/DetailsPage'
 
 function App() {
 
@@ -21,7 +20,7 @@ function App() {
               {/* <Route exact path="/" element={<HomePage/>} /> */}
               <Route path="/search" element={ <SearchPage /> } />
               {/* <Route path="/listing" element={<ListingPage/>} /> */}
-              {/* <Route path="/details/:pokemonId" element={<DetailsPage/>} /> */}
+              <Route path="/detail/:identifier" element={<DetailsPage />} />
               {/* <Route path="/bookmarks" element={<BookmarksPage/>} /> */}
             </Routes>
           </Router>

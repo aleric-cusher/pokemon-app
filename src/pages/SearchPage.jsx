@@ -5,6 +5,7 @@ import { DataContext } from '../contexts/DataContext'
 import pokemonShuffler from '../utils/pokemonShuffler'
 import { ErrorContext } from '../contexts/ErrorContext'
 import PokemonCard from '../components/PokemonCard'
+import ListingComponent from '../components/ListingComponent'
 
 // todo
 // make component for searched pokemon
@@ -16,12 +17,17 @@ import PokemonCard from '../components/PokemonCard'
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [loading, setLoading] = useState(true)
+  const [showSearch, setShowSearch] = useState(null)
 
   const { pokemonList, updatePokemonList} = useContext(DataContext)
   const { showError } = useContext(ErrorContext)
 
-  const handleSearch = () => {
-    console.log('called handle search')
+  const handleSearch = (value=null) => {
+    if(value){
+      setShowSearch(value)
+    } else {
+      setShowSearch(searchTerm)
+    }
   }
 
   const updateSearchTerm = (value) => {
@@ -29,20 +35,25 @@ const SearchPage = () => {
   }
 
   const getPokemons = async () => {
-    if(pokemonList.length < 1){
-      let response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1010')
-      let data = await response.json()
-      if (response.status === 200){
-        const pokemons = pokemonShuffler(data.results)
-        updatePokemonList(pokemons)
-      } else {
-        showError('Something went wrong with fetching data!')
-        console.log(response.statusText)
-      }
-    }
     // emulate 2 second loading time
     // await new Promise(r => setTimeout(r, 2000)) 
-    // console.log('waited 5s')
+    // console.log('waited 2s')
+    if(pokemonList.length < 1){
+      let response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1010')
+      if (response.status !== 200){
+        showError('Something went wrong with fetching data!')
+        console.log(response.statusText)
+      } else {
+        let data = await response.json()
+        let pokemons = data.results
+        pokemons.map((item) => {
+          item.id = parseInt(item.url.split('/')[6], 10)
+          // console.log(item.url.split('/')[6]) 
+        })
+        pokemons = pokemonShuffler(pokemons)
+        updatePokemonList(pokemons)
+      }
+    }
     setLoading(false)
   }
   
@@ -51,7 +62,7 @@ const SearchPage = () => {
   }, [])
 
 
-  if(loading){
+  if(loading && pokemonList.length < 1){
     return (
       <Box
         sx={{
@@ -66,9 +77,10 @@ const SearchPage = () => {
     )
   }
 
+  const list = [25, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 30, 31, 32]
   return (
     <>
-      <Box sx={{ mt: '10px' }}>
+      <Box sx={{ mt: '15px', mb: '15px' }}>
         <SearchBar 
           query={searchTerm}
           suggestionsArray={pokemonList.map(item => item.name)}
@@ -76,8 +88,29 @@ const SearchPage = () => {
           setQuery={updateSearchTerm}
         />
       </Box>
-      <Box>
-        <PokemonCard name_id="bulbasaur"/>
+
+      {showSearch && (
+        <Box marginBottom="10px">
+          <ListingComponent identifiers={[showSearch]} />
+        </Box>
+      )}
+        
+
+      <Box borderTop="5px solid grey" paddingTop="5px">
+        {loading ? (
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '80vh', // Adjust the height as needed
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        ) : (
+          <ListingComponent identifiers={list} />
+        )}
       </Box>
     </>
   )
