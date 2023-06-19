@@ -164,31 +164,32 @@ const DetailsPage = (  ) => {
               <CardContent>
                 <Grid container spacing={4}>
                   <Grid item xs={12} md={6}>
-                    <Card sx={{ bgcolor: pokemonColors(pokemon.species.color.name), position: 'relative' }}>
+                    <Card sx={{ bgcolor: pokemonColors(pokemon.species.color.name), position: 'relative', maxHeight: '800px', width: '100%' }}>
                       <CardContent>
-                        <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', color: "#fff", verticalAlign: 'center' }}>
+                        <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', color: '#fff', display: 'flex', alignItems: 'center' }}>
+                          {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
                           {isBookmark ? (
                             <BookmarkIcon
                               id="bookmark-icon"
-                              style={{ color: '#fff', fontWeight: 'bold', cursor: 'pointer', height: "40px", width: "40px" }}
+                              style={{ color: '#fff', fontWeight: 'bold', cursor: 'pointer', height: '40px', width: '40px', marginLeft: '0.5rem' }}
                               onClick={toggleBookmark}
                             />
                           ) : (
                             <BookmarkBorderIcon
                               id="bookmark-icon"
-                              style={{ color: '#fff', fontWeight: 'bold', cursor: 'pointer', height: "40px", width: "40px" }}
+                              style={{ color: '#fff', fontWeight: 'bold', cursor: 'pointer', height: '40px', width: '40px', marginLeft: '0.5rem' }}
                               onClick={toggleBookmark}
                             />
                           )}
-                          {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
                         </Typography>
+
                         <Typography variant="subtitle1" gutterBottom sx={{ color: '#fff', fontWeight: 'bold' }}>
                           #{pokemon.id.toString().padStart(4, '0')}
                         </Typography>
                         <img
                           src={pokemon.sprites.other.dream_world.front_default}
                           alt={pokemon.name}
-                          style={{ width: '100%', height: 'auto' }}
+                          style={{ width: 'auto', height: '400px' }}
                         />
                         {pokemon.base_experience && (
                           <Typography variant="subtitle1" gutterBottom sx={{ color: '#fff' }}>
