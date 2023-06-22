@@ -62,8 +62,10 @@ const ListingPage = () => {
     let data = await getFromUrl(value.url)
     let pokemons = []
     let iterable = data.pokemon_species ? data.pokemon_species : data.pokemon
+    console.log(iterable)
+    // console.log(data)
     iterable.forEach((item) => {
-      let pokemonId = item.url.split('/').at(-2)
+      let pokemonId = item.url ? item.url.split('/').at(-2) : item.pokemon.url.split('/').at(-2)
       pokemons.push(parseInt(pokemonId, 10))
     })
     setFilteredPokemons(pokemons)
