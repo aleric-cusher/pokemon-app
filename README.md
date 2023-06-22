@@ -2,7 +2,8 @@
 ## Overview
 
 The Pokédex Web App is a web application built using ReactJS that allows users to explore and retrieve information about Pokémon characters using the PokéAPI. It provides features such as searching for Pokémon, browsing through different categories, accessing detailed information, bookmarking favorite Pokémon, and more.
-Getting Started
+
+## Getting Started
 
 To get started with the Pokédex Web App, follow the steps below
 
@@ -12,6 +13,7 @@ git clone https://github.com/aleric-cusher/pokemon-app.git
 ```
 2. Install dependencies:
 ```bash
+cd pokemon-app
 npm install
 ```
 Start the development server:

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Container, Typography, Button, Grid, Card, CardMedia } from '@mui/material';
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { Container, Typography, Button, Grid, Card, CardMedia } from '@mui/material'
 
 const HomePage = () => {
   const bannerImages = [
@@ -8,18 +8,18 @@ const HomePage = () => {
     'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/35.svg',
     'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/76.svg',
     'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/4.svg'
-  ];
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  ]
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % bannerImages.length);
-    }, 2000);
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % bannerImages.length)
+    }, 2000)
 
     return () => {
-      clearInterval(interval);
-    };
-  }, [bannerImages.length]);
+      clearInterval(interval)
+    }
+  }, [bannerImages.length])
 
   return (
     <Container maxWidth="md" sx={{ textAlign: 'left', marginTop: '3rem' }}>
@@ -72,7 +72,7 @@ const HomePage = () => {
         </Grid>
       </Grid>
     </Container>
-  );
+  )
 }
 
-export default HomePage;
+export default HomePage

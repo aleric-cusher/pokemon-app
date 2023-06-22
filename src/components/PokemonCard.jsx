@@ -45,7 +45,6 @@ const PokemonCard = ({ pokemonIdentifier }) => {
   }
   
   const updatePoke = async () => {
-    // console.log('updating poke', pokemon)
     let obj = pokemonList.find(item => (item.name === pokemonIdentifier || item.id === pokemonIdentifier))
     if(obj){
       if(obj.url){
@@ -86,7 +85,6 @@ const PokemonCard = ({ pokemonIdentifier }) => {
   }
 
   useEffect(() => {
-    // console.log('ineffect')
     updatePoke()
   }, [pokemonIdentifier])
 

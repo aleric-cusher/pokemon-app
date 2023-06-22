@@ -1,26 +1,25 @@
 import React, { createContext, useState, useEffect } from 'react'
-import pokemonShuffler from '../utils/pokemonShuffler'
 
 const DataContext = createContext()
 
 const DataProvider = ({ children }) => {
   const [pokemonList, setPokemonList] = useState([])
-  const [searchLoad, setSearchLoad] = useState(10)
+  const [filters, setFilters] = useState([
+    {name: 'color', url: 'https://pokeapi.co/api/v2/pokemon-color/'},
+    {name: 'habitat', url: 'https://pokeapi.co/api/v2/pokemon-habitat/'},
+    {name: 'ability', url: 'https://pokeapi.co/api/v2/ability/'},
+    {name: 'shape', url: 'https://pokeapi.co/api/v2/pokemon-shape/'},
+    {name: 'egg group', url: 'https://pokeapi.co/api/v2/egg-group/'}
+  ])
 
   const updatePokemonList = (data) => {
     setPokemonList(data)
   }
 
-  const updateSearchLoad = (value) => {
-    setSearchLoad(value)
+  const updateFilters = (value) => {
+    setFilters(value)
   }
 
-  let contextData = {
-    pokemonList: pokemonList,
-    updatePokemonList: updatePokemonList,
-    searchLoad: searchLoad,
-    updateSearchLoad: updateSearchLoad
-  }
 
   const getPokemons = async () => {
     if(pokemonList.length < 1){
@@ -32,13 +31,19 @@ const DataProvider = ({ children }) => {
         let data = await response.json()
         let pokemons = data.results
         pokemons.map((item) => {
-          item.id = parseInt(item.url.split('/')[6], 10)
-          // console.log(item.url.split('/')[6]) 
+          item.id = parseInt(item.url.split('/').at(-2), 10)
+          // console.log(item.url.split('/').at(-2))
         })
-        // pokemons = pokemonShuffler(pokemons)
         updatePokemonList(pokemons)
       }
     }
+  }
+  
+  let contextData = {
+    pokemonList: pokemonList,
+    updatePokemonList: updatePokemonList,
+    filters: filters,
+    updateFilters: updateFilters
   }
 
   useEffect(() => {

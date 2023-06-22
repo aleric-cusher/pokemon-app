@@ -1,12 +1,12 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import HomeIcon from '@mui/icons-material/Home';
-import SearchIcon from '@mui/icons-material/Search';
-import BookmarksIcon from '@mui/icons-material/Bookmarks';
+import React from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import AppBar from '@mui/material/AppBar'
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
+import IconButton from '@mui/material/IconButton'
+import HomeIcon from '@mui/icons-material/Home'
+import SearchIcon from '@mui/icons-material/Search'
+import BookmarksIcon from '@mui/icons-material/Bookmarks'
 
 const TopBar = () => {
   const location = useLocation()
@@ -53,7 +53,7 @@ const TopBar = () => {
         </nav>
       </Toolbar>
     </AppBar>
-  );
-};
+  )
+}
 
-export default TopBar;
+export default TopBar

@@ -82,7 +82,6 @@ const DetailsPage = (  ) => {
   }
   
   const updatePoke = async () => {
-    // console.log('updating poke', pokemon)
     let obj = pokemonList.find(item => (item.name === identifier || item.id === identifier))
     if(obj){
       if(obj.url){

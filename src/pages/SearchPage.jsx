@@ -5,13 +5,15 @@ import { DataContext } from '../contexts/DataContext'
 import pokemonShuffler from '../utils/pokemonShuffler'
 import { ErrorContext } from '../contexts/ErrorContext'
 import ListingComponent from '../components/ListingComponent'
+import FilterOptions from '../components/FilterOptions'
+import ListingPage from './ListingPage'
 
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [loading, setLoading] = useState(true)
   const [showSearch, setShowSearch] = useState(null)
 
-  const { pokemonList, updatePokemonList, searchLoad, updateSearchLoad} = useContext(DataContext)
+  const { pokemonList, updatePokemonList } = useContext(DataContext)
   const { showError } = useContext(ErrorContext)
 
   const handleSearch = (value=null) => {
@@ -39,10 +41,9 @@ const SearchPage = () => {
         let data = await response.json()
         let pokemons = data.results
         pokemons.map((item) => {
-          item.id = parseInt(item.url.split('/')[6], 10)
-          // console.log(item.url.split('/')[6]) 
+          item.id = parseInt(item.url.split('/').at(-2), 10)
+          // console.log(item.url.split('/').at(-2)) 
         })
-        // pokemons = pokemonShuffler(pokemons)
         updatePokemonList(pokemons)
       }
     }
@@ -80,33 +81,15 @@ const SearchPage = () => {
         />
       </Box>
 
+
       {showSearch && (
         <Box marginBottom="10px">
           <ListingComponent identifiers={[showSearch]} />
         </Box>
       )}
         
-
-      <Box borderTop="5px solid grey" paddingTop="5px">
-        {loading ? (
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: '80vh',
-            }}
-          >
-            <CircularProgress />
-          </Box>
-        ) : (
-          <ListingComponent
-            identifiers={pokemonList.map(item => item.id)}
-            loadMore={true}
-            initialLoad={searchLoad}
-            updateInitialLoad={updateSearchLoad}
-          />
-        )}
+      <Box borderTop='2px solid grey' paddingTop='20px'>
+        <ListingPage />
       </Box>
     </>
   )

@@ -7,7 +7,7 @@ const pokemonColors = (color=null) => {
         case 'brown':
             return "#9F8170"
         case 'gray':
-            return "#BEBFC5"
+            return "#A5B0BF"
         case 'green':
             return "#7BA05B"
         case 'pink':
@@ -17,7 +17,7 @@ const pokemonColors = (color=null) => {
         case 'red':
             return "#ED2939"
         case 'white':
-            return "#ECEEED"
+            return "#BEBFC5"
         case 'yellow':
             return "#F8DE7E"
         default:
