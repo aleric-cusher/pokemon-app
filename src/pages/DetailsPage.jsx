@@ -186,7 +186,7 @@ const DetailsPage = (  ) => {
                           #{pokemon.id.toString().padStart(4, '0')}
                         </Typography>
                         <img
-                          src={pokemon.sprites.other.dream_world.front_default}
+                          src={sprites.other.dream_world.front_default || sprites.other.home.front_default || sprites.front_default}
                           alt={pokemon.name}
                           style={{ width: 'auto', height: '400px' }}
                         />
