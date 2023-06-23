@@ -39,7 +39,6 @@ const ListingPage = () => {
   }
 
   const handleFilterTypeChange = (value) => {
-    console.log(value)
     setFilteredPokemons([])
     setSelectedOption(null)
     if(value === ''){

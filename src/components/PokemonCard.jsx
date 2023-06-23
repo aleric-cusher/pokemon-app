@@ -137,7 +137,7 @@ const PokemonCard = ({ pokemonIdentifier }) => {
           }}
         >
           <img
-            src={sprites.other.dream_world.front_default || sprites.other.home.front_default || sprites.front_default}
+            src={sprites.other.dream_world.front_default || sprites.other.home.front_default || sprites.other['official-artwork'].front_default}
             alt={name}
             style={{ maxWidth: '100%', maxHeight: '100%' }} />
           <Typography variant="body2" color="#fff" style={{ position: 'absolute', top: '10px', right: '10px', fontWeight: 'bold' }}>
