@@ -118,23 +118,26 @@ The Pokédex Web App is built using the following technologies:
 ## Images and Videos
 
 ### HomePage
-![Homepage](<extra/Screenshot 2023-06-19 211428.png>)
+![Homepage](<extra/Home Page.png>)
 
 ### SearchPage
-![Alt text](<extra/Screenshot 2023-06-19 211500.png>)
-
-### Search
-![Alt text](<extra/Screenshot 2023-06-19 211517.png>)
-
-### BookmarksPage
-![Alt text](<extra/Screenshot 2023-06-19 211603.png>)
+![Alt text](<extra/Search Page.png>)
+#### With Search
+![Alt text](<extra/Search Page with search.png>)
+### With Filters
+![Alt text](<extra/Search Page with filter.png>)
+![Alt text](<extra/Search Page with filter 1.png>)
+![Alt text](<extra/Search Page with filter 2.png>)
 
 ### DetailsPage
-![Alt text](<extra/Screenshot 2023-06-19 212911.png>)
-![Alt text](<extra/Screenshot 2023-06-19 at 21-29-24 Pokédex.png>)
+![Alt text](<extra/Details Page.png>)
+![Alt text](<extra/Details Page 1.png>)
+
+### BookmarksPage
+![Alt text](<extra/Bookmarks Page.png>)
 
 ### Video
-<video src="extra/website_video.mp4" controls title="Pokedex"></video>
+<video src="extra/Website%20Video.mp4" controls title="Title"></video>
 ## Conclusion
 
 The Pokédex Web App offers users an immersive experience to explore the world of Pokémon. With its intuitive interface, users can search for Pokémon, browse through categories, access detailed information, and bookmark their favorite Pokémon. The app provides a seamless and engaging experience for Pokémon enthusiasts and fans.

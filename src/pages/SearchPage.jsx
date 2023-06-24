@@ -13,7 +13,7 @@ const SearchPage = () => {
   const [loading, setLoading] = useState(true)
   const [showSearch, setShowSearch] = useState(null)
 
-  const { pokemonList, updatePokemonList } = useContext(DataContext)
+  const { pokemonList } = useContext(DataContext)
   const { showError } = useContext(ErrorContext)
 
   const handleSearch = (value=null) => {
@@ -27,33 +27,6 @@ const SearchPage = () => {
   const updateSearchTerm = (value) => {
     setSearchTerm(value)
   }
-
-  const getPokemons = async () => {
-    // emulate 2 second loading time
-    // await new Promise(r => setTimeout(r, 2000)) 
-    // console.log('waited 2s')
-    if(pokemonList.length < 1){
-      let response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1010')
-      if (response.status !== 200){
-        showError('Something went wrong with fetching data!')
-        console.log(response.statusText)
-      } else {
-        let data = await response.json()
-        let pokemons = data.results
-        pokemons.map((item) => {
-          item.id = parseInt(item.url.split('/').at(-2), 10)
-          // console.log(item.url.split('/').at(-2)) 
-        })
-        updatePokemonList(pokemons)
-      }
-    }
-    setLoading(false)
-  }
-  
-  useEffect(() => {
-    getPokemons()
-  }, [])
-
 
   if(loading && pokemonList.length < 1){
     return (

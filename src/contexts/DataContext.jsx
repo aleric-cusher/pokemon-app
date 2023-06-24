@@ -34,7 +34,7 @@ const DataProvider = ({ children }) => {
           item.id = parseInt(item.url.split('/').at(-2), 10)
           // console.log(item.url.split('/').at(-2))
         })
-        updatePokemonList(pokemons)
+        setPokemonList(pokemons)
       }
     }
   }
