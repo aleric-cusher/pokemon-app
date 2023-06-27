@@ -125,7 +125,7 @@ const PokemonCard = ({ pokemonIdentifier }) => {
       <Card onClick={handleClick} style={{ overflow: 'hidden', borderRadius: '12px', cursor: 'pointer' }}>
         <div
           style={{
-            backgroundColor: pokemonColors((pokemon.species.color ? pokemon.species.color.name : null)),
+            backgroundColor: pokemonColors(pokemon.species.color ? pokemon.species.color.name : null),
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -139,7 +139,13 @@ const PokemonCard = ({ pokemonIdentifier }) => {
           <img
             src={sprites.other.dream_world.front_default || sprites.other.home.front_default || sprites.other['official-artwork'].front_default}
             alt={name}
-            style={{ maxWidth: '100%', maxHeight: '100%' }} />
+            style={{ maxWidth: '100%', maxHeight: 'auto', position: 'relative', zIndex: 10 }}
+          />
+          <img
+            src="src/assets/pokeShadow.png"
+            alt={name}
+            style={{ maxWidth: '100%', maxHeight: 'auto', position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0 }}
+          />
           <Typography variant="body2" color="#fff" style={{ position: 'absolute', top: '10px', right: '10px', fontWeight: 'bold' }}>
             #{id.toString().padStart(4, '0')}
           </Typography>
@@ -179,6 +185,7 @@ const PokemonCard = ({ pokemonIdentifier }) => {
         </CardContent>
       </Card>
     </Grid>
+
   )
 }
   
