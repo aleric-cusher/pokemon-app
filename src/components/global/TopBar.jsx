@@ -12,11 +12,13 @@ const TopBar = () => {
   const location = useLocation()
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#81b29a', borderRadius: 1 }}>
+    <AppBar position="static" sx={{ backgroundColor: '#4e4e4e', borderRadius: 1 }}>
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <IconButton component={Link} to="/" sx={{ marginRight: "1rem" }}>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: '#fff' }}>
           Pokédex
         </Typography>
+        </IconButton>
         <nav>
           <IconButton
             component={Link}

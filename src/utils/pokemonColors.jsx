@@ -1,25 +1,25 @@
 const pokemonColors = (color=null) => {
     switch(color){
         case 'black':
-            return "#555555"
+            return "#252525"
         case 'blue':
-            return "#00B9E8"
+            return "#638fad"
         case 'brown':
-            return "#9F8170"
+            return "#977a6a"
         case 'gray':
-            return "#A5B0BF"
+            return "#696969"
         case 'green':
-            return "#7BA05B"
+            return "#708969"
         case 'pink':
-            return "#FF91AF"
+            return "#bb8895"
         case 'purple':
-            return "#B284BE"
+            return "#9b72a5"
         case 'red':
-            return "#ED2939"
+            return "#a54141"
         case 'white':
-            return "#BEBFC5"
+            return "#d2d0ce"
         case 'yellow':
-            return "#F8DE7E"
+            return "#cbbf67"
         default:
             return "#f1f1f1"
     }
